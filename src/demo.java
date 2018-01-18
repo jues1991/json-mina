@@ -1,23 +1,12 @@
-import org.apache.log4j.Logger;
+import pers.jues.network.JsonMina.JsonMina;
 
 public class demo {
-	private static Logger logger = Logger.getLogger(demo.class);
-	
-	
-	public boolean listen( int port ) {
-		logger.info("listen");
-		logger.debug("listen");
-		logger.warn("listen");
-		//
-		return true;
-	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		demo m = new demo();
+		JsonMina m = new JsonMina();
 		//
-		m.listen(60000);
-		
+		m.start(60000);
 	}
 
 }
