@@ -3,8 +3,6 @@ package pers.jues.network.JsonMina;
 import java.net.InetSocketAddress;
 
 import org.apache.log4j.Logger;
-import org.apache.mina.core.service.IoAcceptor;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
@@ -16,8 +14,8 @@ public class JsonMina {
 		try {
 			acceptor = new NioSocketAcceptor();
 			//
-			acceptor.getFilterChain().addLast("logger",new LoggingFilter());
-			acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MyTextEndCodecFactory()));
+			acceptor.getFilterChain().addLast("text", new MyTextEndFilter());
+			acceptor.getFilterChain().addLast("json", new MyJsonFilter());
 			//acceptor.getSessionConfig().setReadBufferSize(2048);
 			//acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
 			acceptor.setHandler(new MyHandler());
