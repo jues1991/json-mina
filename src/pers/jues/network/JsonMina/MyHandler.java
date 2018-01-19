@@ -30,6 +30,7 @@ public class MyHandler extends IoHandlerAdapter {
 			//
 			logger.debug(jobj.toString());
 		}
+		session.write(message);
 		super.messageReceived(session, message);
 	}
 

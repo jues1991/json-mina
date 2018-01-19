@@ -3,8 +3,10 @@ package pers.jues.network.JsonMina;
 import java.nio.charset.Charset;
 
 import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.filterchain.IoFilter.NextFilter;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.core.write.DefaultWriteRequest;
 import org.apache.mina.core.write.WriteRequest;
 
 public class MyTextEndFilter extends IoFilterAdapter {
@@ -18,11 +20,10 @@ public class MyTextEndFilter extends IoFilterAdapter {
 	@Override
 	public void messageReceived(NextFilter nextFilter, IoSession session, Object message) throws Exception {
 		// TODO Auto-generated method stub
-		if (!(message instanceof IoBuffer)) {  
-            nextFilter.messageReceived(session, message);  
-            return;  
-        }  
-		
+		if (!(message instanceof IoBuffer)) {
+			return;
+		}
+
 		IoBuffer in = (IoBuffer) message;
 		IoBuffer buff = getContext(session);
 		while (in.hasRemaining()) {
@@ -47,6 +48,23 @@ public class MyTextEndFilter extends IoFilterAdapter {
 	public void messageSent(NextFilter nextFilter, IoSession session, WriteRequest writeRequest) throws Exception {
 		// TODO Auto-generated method stub
 		super.messageSent(nextFilter, session, writeRequest);
+	}
+
+	@Override
+	public void filterWrite(NextFilter nextFilter, IoSession session, WriteRequest writeRequest) throws Exception {
+		// TODO Auto-generated method stub
+		Object message = writeRequest.getMessage();
+		if (!(message instanceof String)) {
+			return;
+		}
+		String text = (String)message;
+		IoBuffer buff = IoBuffer.allocate(100).setAutoExpand(true);
+		buff.putString(text, charset.newEncoder());
+		buff.put((byte)0x00);
+		buff.flip();
+		WriteRequest request = new DefaultWriteRequest(buff, writeRequest.getFuture(), writeRequest.getDestination());
+		//
+		nextFilter.filterWrite(session, request);
 	}
 
 	private IoBuffer getContext(IoSession session) {
