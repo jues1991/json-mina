@@ -2,14 +2,16 @@ package pers.jues.network.JsonMina;
 
 import java.nio.charset.Charset;
 
+import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
-import org.apache.mina.core.filterchain.IoFilter.NextFilter;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.core.write.DefaultWriteRequest;
 import org.apache.mina.core.write.WriteRequest;
 
 public class MyTextEndFilter extends IoFilterAdapter {
+	private static Logger logger = Logger.getLogger(JsonMina.class);
+
 	private Charset charset = Charset.forName("UTF-8");
 	private static String CONTEXT = MyTextEndFilter.class.getName() + ".context";
 
@@ -21,6 +23,7 @@ public class MyTextEndFilter extends IoFilterAdapter {
 	public void messageReceived(NextFilter nextFilter, IoSession session, Object message) throws Exception {
 		// TODO Auto-generated method stub
 		if (!(message instanceof IoBuffer)) {
+			logger.debug(message.getClass().getSimpleName());
 			return;
 		}
 
@@ -55,12 +58,13 @@ public class MyTextEndFilter extends IoFilterAdapter {
 		// TODO Auto-generated method stub
 		Object message = writeRequest.getMessage();
 		if (!(message instanceof String)) {
+			logger.debug(message.getClass().getSimpleName());
 			return;
 		}
-		String text = (String)message;
+		String text = (String) message;
 		IoBuffer buff = IoBuffer.allocate(100).setAutoExpand(true);
 		buff.putString(text, charset.newEncoder());
-		buff.put((byte)0x00);
+		buff.put((byte) 0x00);
 		buff.flip();
 		WriteRequest request = new DefaultWriteRequest(buff, writeRequest.getFuture(), writeRequest.getDestination());
 		//

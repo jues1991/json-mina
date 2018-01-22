@@ -25,12 +25,13 @@ public class MyHandler extends IoHandlerAdapter {
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
 		// TODO Auto-generated method stub
-		if ((message instanceof JsonObject)) {
-			JsonObject jobj = (JsonObject)message;
-			//
-			logger.debug(jobj.toString());
+		if (!(message instanceof JsonObject)) {
+			logger.debug(message.getClass().getSimpleName());
+			return;
 		}
-		session.write(message);
+		JsonObject jobj = (JsonObject) message;
+
+		session.write(jobj);
 		super.messageReceived(session, message);
 	}
 
