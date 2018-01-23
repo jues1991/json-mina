@@ -10,7 +10,7 @@ import org.apache.mina.core.write.DefaultWriteRequest;
 import org.apache.mina.core.write.WriteRequest;
 
 public class MyTextEndFilter extends IoFilterAdapter {
-	private static Logger logger = Logger.getLogger(JsonMina.class);
+	private static Logger logger = Logger.getLogger(MyTextEndFilter.class);
 
 	private Charset charset = Charset.forName("UTF-8");
 	private static String CONTEXT = MyTextEndFilter.class.getName() + ".context";

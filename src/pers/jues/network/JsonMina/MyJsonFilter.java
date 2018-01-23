@@ -14,7 +14,7 @@ import org.apache.mina.core.write.DefaultWriteRequest;
 import org.apache.mina.core.write.WriteRequest;
 
 public class MyJsonFilter extends IoFilterAdapter {
-	private static Logger logger = Logger.getLogger(JsonMina.class);
+	private static Logger logger = Logger.getLogger(MyJsonFilter.class);
 
 	@Override
 	public void messageReceived(NextFilter nextFilter, IoSession session, Object message) throws Exception {

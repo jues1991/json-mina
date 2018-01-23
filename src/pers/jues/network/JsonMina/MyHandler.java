@@ -8,7 +8,7 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
 public class MyHandler extends IoHandlerAdapter {
-	private static Logger logger = Logger.getLogger(JsonMina.class);
+	private static Logger logger = Logger.getLogger(MyHandler.class);
 
 	@Override
 	public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
