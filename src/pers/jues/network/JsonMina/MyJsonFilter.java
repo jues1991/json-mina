@@ -55,6 +55,9 @@ public class MyJsonFilter extends IoFilterAdapter {
 		}
 		JsonObject jobj = (JsonObject) message;
 		String text = jobj.toString();
+		
+		logger.debug(text);
+		
 		WriteRequest request = new DefaultWriteRequest(text, writeRequest.getFuture(), writeRequest.getDestination());
 		//
 		nextFilter.filterWrite(session, request);
